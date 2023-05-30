@@ -16,13 +16,17 @@
 
       4. Reload the page when the reset button is clicked (hint: search window.location) **DONE**
 
-      5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
+      5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers **DONE**
 *************************** */
 
 window.addEventListener('DOMContentLoaded', () => {
   const start = document.querySelector('#start');
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
+
+    // Starts countdown timer
+    startTimer(minutes, seconds, countdownDisplay);
+
     start.style.display = 'none';
   });
   // quizArray QUESTIONS & ANSWERS
@@ -85,7 +89,6 @@ window.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
-        //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
@@ -95,32 +98,71 @@ window.addEventListener('DOMContentLoaded', () => {
         radioElement.disabled = true;
 
         if (quizItem.a == i) {
-          //change background color of li element here
           liElement.style.backgroundColor = '#007500' //Green;
         }
 
         if (radioElement.checked) {
-          // code for task 1 goes heres]
+          // Enables selected radio button
           radioElement.disabled = false;
             if(quizItem.a === i)
               score += 1;
             else
-            liElement.style.backgroundColor = '#D10000' //Red;
+              liElement.style.backgroundColor = '#D10000' //Red;
         }
       }
     });
-    document.getElementById('score').innerHTML = score;
+    document.getElementById('score').innerHTML = 'Total score: ' + score;
     document.getElementById('btnSubmit').disabled = 'true';
   };
 
-  function refreshQuiz() {
+  const refreshQuiz = () => {
     window.location.reload();
   }
 
 
+  // Countdown timer
+  let minutes = 1;
+  let seconds = 0;
+
+  let countdownDisplay = document.querySelector('#time-remaining');
+
+  // Converts to string to allow the 00:00 time formatting
+  let formattedMinutes = String(minutes).padStart(2, '0');
+  let formattedSeconds = String(seconds).padStart(2, '0');
+
+  countdownDisplay.textContent = formattedMinutes + ":" + formattedSeconds;
+
+  const startTimer = (timerMinutes, timerSeconds, display) => {
+    const timer = setInterval(() => {  
+      let isTimerOn = true; 
+
+      if (timerSeconds === 0) {
+        if (timerMinutes === 0) {
+          clearInterval(timer);
+          isTimerOn = false;
+          calculateScore();
+        }
+          timerMinutes--;
+          timerSeconds = 59;       
+      } else {
+        timerSeconds--;
+      }
+
+      let minutesLeft = String(timerMinutes).padStart(2, '0');
+      let secondsLeft = String(timerSeconds).padStart(2, '0');
+
+      display.textContent = minutesLeft + ':' + secondsLeft;
+      
+      if (isTimerOn == false)
+      {
+        document.querySelector('#time').textContent = "Time's up!";
+        display.textContent = "";
+      }   
+    }, 1000);
+  }
+
   document.getElementById('btnSubmit').addEventListener('click',calculateScore);
   document.getElementById('btnReset').addEventListener('click',refreshQuiz);
 
-  // call the displayQuiz function
   displayQuiz();
 });
