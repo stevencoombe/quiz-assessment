@@ -29,14 +29,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     start.style.display = 'none';
   });
-  // quizArray QUESTIONS & ANSWERS
-  // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
-  // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
   const quizArray = [
     {
       q: 'Which is the third planet from the sun?',
       o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
-      a: 1, // array index 1 - so Earth is the correct answer here
+      a: 1,
     },
     {
       q: 'Which is the largest ocean on Earth?',
@@ -60,7 +57,6 @@ window.addEventListener('DOMContentLoaded', () => {
     },
   ];
 
-  // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
     const quizWrap = document.querySelector('#quizWrap');
     let quizDisplay = '';
@@ -85,7 +81,19 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // Calculate the score
+  let isQuizSubmitted = false;
+
+  const submittedQuiz = () => {
+    isQuizSubmitted = true;
+    calculateScore();
+  }
+
   const calculateScore = () => {
+    if (isOutOfTime == false && isQuizSubmitted == true) {
+      document.querySelector('#time').textContent = "";
+      countdownDisplay.textContent = "";
+    }
+    
     let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
@@ -119,10 +127,11 @@ window.addEventListener('DOMContentLoaded', () => {
     window.location.reload();
   }
 
-
   // Countdown timer
   let minutes = 1;
   let seconds = 0;
+
+  let isOutOfTime = false;
 
   let countdownDisplay = document.querySelector('#time-remaining');
 
@@ -140,6 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (timerMinutes === 0) {
           clearInterval(timer);
           isTimerOn = false;
+          isOutOfTime = true;
           calculateScore();
         }
           timerMinutes--;
@@ -153,15 +163,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
       display.textContent = minutesLeft + ':' + secondsLeft;
       
-      if (isTimerOn == false)
+      if (isTimerOn == false && isQuizSubmitted == false)
       {
         document.querySelector('#time').textContent = "Time's up!";
         display.textContent = "";
+        
       }   
     }, 1000);
   }
 
-  document.getElementById('btnSubmit').addEventListener('click',calculateScore);
+  document.getElementById('btnSubmit').addEventListener('click',submittedQuiz);
   document.getElementById('btnReset').addEventListener('click',refreshQuiz);
 
   displayQuiz();
