@@ -96,7 +96,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (quizItem.a == i) {
           //change background color of li element here
-          radioElement.disabled = false;
           liElement.style.backgroundColor = '#007500' //Green;
         }
 
@@ -110,9 +109,8 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-    console.log(score);
+    document.getElementById('score').innerHTML = score;
     document.getElementById('btnSubmit').disabled = 'true';
-    console.log(radioElement.disabled);
   };
 
   function refreshQuiz() {
