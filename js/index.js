@@ -7,12 +7,12 @@
   The tasks you need to do are below.
 
     TASKS TODO:
-      1. Calculate the score as the total of the number of correct answers
+      1. Calculate the score as the total of the number of correct answers. **DONE**
 
       2. Add an Event listener for the submit button, which will display the score and highlight 
-         the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you.
+         the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you. **DONE**
 
-      3. Add 2 more questions to the app (each question must have 4 options).
+      3. Add 2 more questions to the app (each question must have 4 options). **DONE**
 
       4. Reload the page when the reset button is clicked (hint: search window.location)
 
@@ -44,6 +44,16 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: 'What is the largest mountain on Earth',
+      o: ['Kangchenjunga', 'Everest', 'Kosciuszko', 'Fuji'],
+      a: 1,
+    },
+    {
+      q: 'What is the largest continent',
+      o: ['Africa', 'North America', 'Antarctica', 'Asia'],
+      a: 3,
+    },
   ];
 
   // function to Display the quiz questions and answers from the object
@@ -53,10 +63,17 @@ window.addEventListener('DOMContentLoaded', () => {
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
-                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0"> ${quizItem.o[0]}</li>
-                    <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
-                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
-                    <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
+                    <li class="list-group-item mt-2" id="li_${index}_0">
+                      <input type="radio" name="radio${index}" id="radio_${index}_0"> ${quizItem.o[0]}</li>
+
+                    <li class="list-group-item" id="li_${index}_1">
+                      <input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
+
+                    <li class="list-group-item"  id="li_${index}_2">
+                      <input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
+
+                    <li class="list-group-item"  id="li_${index}_3">
+                      <input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
                     </ul>
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
@@ -76,15 +93,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.style.backgroundColor = 'red';
         }
 
         if (radioElement.checked) {
-          // code for task 1 goes here
+          // code for task 1 goes heres]
+            
+            if(i === quizItem.a)
+            {
+              score += 1;
+            }
+
+
         }
       }
     });
+    console.log(score);
   };
 
+  document.getElementById('btnSubmit').addEventListener('click',calculateScore);
   // call the displayQuiz function
   displayQuiz();
 });
