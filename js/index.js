@@ -14,7 +14,7 @@
 
       3. Add 2 more questions to the app (each question must have 4 options). **DONE**
 
-      4. Reload the page when the reset button is clicked (hint: search window.location)
+      4. Reload the page when the reset button is clicked (hint: search window.location) **DONE**
 
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
@@ -91,27 +91,38 @@ window.addEventListener('DOMContentLoaded', () => {
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
 
+        // Radio buttons not selected by user will stay disabled
+        radioElement.disabled = true;
+
         if (quizItem.a == i) {
           //change background color of li element here
-          liElement.style.backgroundColor = 'red';
+          radioElement.disabled = false;
+          liElement.style.backgroundColor = '#007500' //Green;
         }
 
         if (radioElement.checked) {
           // code for task 1 goes heres]
-            
-            if(i === quizItem.a)
-            {
+          radioElement.disabled = false;
+            if(quizItem.a === i)
               score += 1;
-            }
-
-
+            else
+            liElement.style.backgroundColor = '#D10000' //Red;
         }
       }
     });
     console.log(score);
+    document.getElementById('btnSubmit').disabled = 'true';
+    console.log(radioElement.disabled);
   };
 
+  function refreshQuiz() {
+    window.location.reload();
+  }
+
+
   document.getElementById('btnSubmit').addEventListener('click',calculateScore);
+  document.getElementById('btnReset').addEventListener('click',refreshQuiz);
+
   // call the displayQuiz function
   displayQuiz();
 });
